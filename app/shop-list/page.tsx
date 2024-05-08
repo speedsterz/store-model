@@ -8,7 +8,7 @@ import Image from "next/image";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
 const page = () => {
-  const productList = UseProductStore<Product[]>((state) => state.list);
+  const productList = UseProductStore<Product[]>((state) => state.list) || [];
   const removeProduct = UseProductStore((state) => state.remove);
   const totalPrice = UseProductStore.getState().getTotalPrice();
   return (

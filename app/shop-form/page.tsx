@@ -4,7 +4,6 @@ import TextField from "@mui/material/TextField";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
-
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Navbar from "../component/Navbar";
 import { Button } from "@mui/material";
@@ -17,8 +16,8 @@ const page = () => {
   const familyref = UseRef<HTMLInputElement>(null);
   const numberref = UseRef<HTMLInputElement>(null);
   const postalref = UseRef<HTMLInputElement>(null);
-  const stateref = UseRef<HTMLInputElement>(null);
-  //   const cityref = UseRef<SelectInstance<ISelectOption | null>>(null);
+  const stateref = UseRef<HTMLSelectElement>(null);
+  const cityref = UseRef<HTMLSelectElement>(null);
   const addressref = UseRef<HTMLInputElement>(null);
 
   const Router = UseRouter();
@@ -33,7 +32,6 @@ const page = () => {
             className="flex flex-col gap-2"
             onSubmit={(event: FormEvent) => {
               event.preventDefault();
-              //   if (cityref.current) console.log(cityref.current.focus());
               useProductStore.getState().clearList();
               Router.push("/");
               Router.refresh();
@@ -72,7 +70,7 @@ const page = () => {
                 id="demo-simple-select"
                 label="استان"
                 defaultValue={"مازندران"}
-                ref={stateref}
+                inputRef={stateref}
               >
                 <MenuItem value={"تهران"}>تهران</MenuItem>
                 <MenuItem value={"مازندران"}>مازندران</MenuItem>
@@ -87,6 +85,7 @@ const page = () => {
                 id="demo-simple-select"
                 label="شهرستان"
                 defaultValue={"ساری"}
+                inputRef={cityref}
               >
                 <MenuItem value={"ساری"}>ساری</MenuItem>
                 <MenuItem value={"بابل"}>بابل</MenuItem>
