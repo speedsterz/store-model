@@ -7,6 +7,7 @@ import ShoppingCartCheckoutTwoToneIcon from "@mui/icons-material/ShoppingCartChe
 import { useProductStore } from "../store/store";
 import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
+import { Button } from "@mui/material";
 
 const Navbar = () => {
   const { data: session, status } = useSession();
@@ -54,14 +55,18 @@ const Navbar = () => {
               </Link>
             </li>
             <li className="cursor-pointer" onClick={() => signOut()}>
-              خروج
+              <Button color="error" variant="contained" className="f-vazir">
+                خروج
+              </Button>
             </li>
           </>
         )}
 
         {status === "unauthenticated" && (
           <li>
-            <Link href={"/login"}>ورود</Link>
+            <Button variant="contained" className="f-vazir">
+              <Link href={"/login"}>ورود</Link>
+            </Button>
           </li>
         )}
       </ul>
