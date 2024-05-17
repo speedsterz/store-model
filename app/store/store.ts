@@ -44,7 +44,7 @@ export const useProductStore = create<ProductStore>((set, get) => ({
           if (product.id === productId) {
             const newCount = product.count - 1;
             if (newCount === 0) {
-              return null;
+              return null as any;
             } else {
               return { ...product, count: newCount };
             }
