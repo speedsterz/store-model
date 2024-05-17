@@ -1,30 +1,29 @@
 "use client";
-import { signIn } from "next-auth/react";
-import Link from "next/link";
+
 import { useRouter as UseRouter } from "next/navigation";
-import React, { FormEvent, useRef as UseRef } from "react";
+import { FormEvent, useRef as UseRef } from "react";
 
 const page = () => {
   const usernameRef = UseRef<HTMLInputElement>(null);
   const passwordRef = UseRef<HTMLInputElement>(null);
-
   const router = UseRouter();
+
   const handlesubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     const username = usernameRef.current?.value;
     const password = passwordRef.current?.value;
-    e.preventDefault();
-    signIn("credentials", {
-      username,
-      password,
-      redirect: false,
-    }).then((res) => {
-      if (!res?.ok) {
-        console.log(res);
-      } else {
-        console.log(res);
-        router.push("/");
-      }
+    const res = await fetch("api/signup", {
+      method: "POST",
+      body: JSON.stringify({
+        username: username,
+        password: password,
+      }),
+      headers: { "Content-Type": "application/json" },
     });
+    console.log(res);
+    if (res.status) {
+      router.push("/");
+    }
   };
   return (
     <section className="bg-gray-50 dark:bg-gray-900">
@@ -32,7 +31,7 @@ const page = () => {
         <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-              فرم ورود به اکانت
+              ساخت اکانت
             </h1>
             <form
               className="space-y-4 md:space-y-6"
@@ -76,17 +75,8 @@ const page = () => {
                 type="submit"
                 className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
               >
-                ورود به اکانت
+                عضویت
               </button>
-              <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                اکانت نساختی هنوز؟{" "}
-                <Link
-                  href="/sign-up"
-                  className="font-medium text-primary-600 hover:underline dark:text-primary-500"
-                >
-                  ثبت نام
-                </Link>
-              </p>
             </form>
           </div>
         </div>

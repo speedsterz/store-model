@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Button } from "@mui/material";
 import Link from "next/link";
 import { useProductStore, Product } from "../store/store";
+import { useSession } from "next-auth/react";
 
 interface probs {
   title: string;
@@ -12,6 +13,7 @@ interface probs {
   id: number;
 }
 const ProductCard = ({ title, price, img, id }: probs) => {
+  const { status } = useSession();
   const addProduct = useProductStore((state) => state.add);
   return (
     <div className="bg-white cursor-pointer drop-shadow-md hover:shadow-lg p-6 rounded-xl flex flex-col gap-3  justify-between items-center">
@@ -46,6 +48,7 @@ const ProductCard = ({ title, price, img, id }: probs) => {
               price: price,
             });
           }}
+          disabled={status !== "authenticated"}
         >
           +
         </Button>

@@ -3,8 +3,10 @@ import { Button } from "@mui/material";
 import React from "react";
 import { useProductStore } from "../store/store";
 import { item } from "./page";
+import { useSession } from "next-auth/react";
 
 const Add = ({ item }: { item: item }) => {
+  const { status } = useSession();
   const addProduct = useProductStore((state) => state.add);
   return (
     <Button
@@ -19,6 +21,7 @@ const Add = ({ item }: { item: item }) => {
           price: item.price,
         });
       }}
+      disabled={status !== "authenticated"}
     >
       خرید کالا
     </Button>
