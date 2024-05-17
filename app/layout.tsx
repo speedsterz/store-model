@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import localFont from "next/font/local";
+import AuthProvider from "./Provider/AuthProvider";
 
 export const metadata: Metadata = {
   title: "Store App",
@@ -18,7 +19,7 @@ export default function RootLayout({
   return (
     <html lang="en" dir="rtl">
       <body className={`${vazirFont.className} min-h-screen  bg-slate-200`}>
-        {children}
+        <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
   );

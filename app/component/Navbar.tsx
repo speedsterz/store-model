@@ -5,17 +5,18 @@ import React, { useEffect, useState } from "react";
 import logo from "../../public/images/logo.svg";
 import ShoppingCartCheckoutTwoToneIcon from "@mui/icons-material/ShoppingCartCheckoutTwoTone";
 import { useProductStore } from "../store/store";
+import { useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
 
 const Navbar = () => {
+  const { data: session, status } = useSession();
   const [totalCount, setTotalCount] = useState(
     useProductStore.getState().getTotalCount()
   );
-
   useEffect(() => {
     const unsubscribe = useProductStore.subscribe((newState) =>
       setTotalCount(newState.getTotalCount())
     );
-
     return () => {
       unsubscribe();
     };
@@ -39,17 +40,30 @@ const Navbar = () => {
         <li className="hover:text-red-200">
           <Link href="/">ارتباط با ما</Link>
         </li>
-        <li className="cursor-pointer hover:text-red-200">
-          <Link href="/shop-list" className="flex gap-1">
-            <ShoppingCartCheckoutTwoToneIcon />
+        {status === "authenticated" && (
+          <>
+            <li className="cursor-pointer hover:text-red-200">
+              <Link href="/shop-list" className="flex gap-1">
+                <ShoppingCartCheckoutTwoToneIcon />
 
-            {totalCount != 0 && (
-              <div className="rounded-full bg-red-100 w-5 h-5 flex justify-center">
-                <h6 className="text-red-500 ">{totalCount}</h6>
-              </div>
-            )}
-          </Link>
-        </li>
+                {totalCount != 0 && (
+                  <div className="rounded-full bg-red-100 w-5 h-5 flex justify-center">
+                    <h6 className="text-red-500 ">{totalCount}</h6>
+                  </div>
+                )}
+              </Link>
+            </li>
+            <li className="cursor-pointer" onClick={() => signOut()}>
+              خروج
+            </li>
+          </>
+        )}
+
+        {status === "unauthenticated" && (
+          <li>
+            <Link href={"/login"}>ورود</Link>
+          </li>
+        )}
       </ul>
     </nav>
   );
